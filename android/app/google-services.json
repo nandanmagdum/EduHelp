@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1006446736086",
+    "project_id": "eduhelp-73352",
+    "storage_bucket": "eduhelp-73352.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006446736086:android:3560998ac3d68486430f77",
+        "android_client_info": {
+          "package_name": "com.gcek.edu_help"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYvVuYESi9evSBQ9qi-yRlycSw-zw6F20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
