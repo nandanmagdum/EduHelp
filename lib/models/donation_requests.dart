@@ -1,6 +1,6 @@
 class DonationRequests {
   String? requestId;
-  String? studentId;
+  String? userId;
   String? title;
   String? description;
   String? reason;
@@ -8,26 +8,27 @@ class DonationRequests {
   int? amountRecieved;
   String? status;
   String? paymentDetails;
-  String? createdAt;
+  dynamic createdAt;
 
-  DonationRequests(
-      {this.requestId,
-      this.studentId,
-      this.title,
-      this.description,
-      this.reason,
-      this.amountNeeded,
-      this.amountRecieved,
-      this.status,
-      this.paymentDetails,
-      this.createdAt});
+  DonationRequests({
+    this.requestId,
+    this.userId,
+    this.title,
+    this.description,
+    this.reason,
+    this.amountNeeded,
+    this.amountRecieved,
+    this.status,
+    this.paymentDetails,
+    this.createdAt,
+  });
 
   DonationRequests.fromJson(Map<String, dynamic> json) {
     if (json["requestId"] is String) {
       requestId = json["requestId"];
     }
     if (json["studentId"] is String) {
-      studentId = json["studentId"];
+      userId = json["studentId"];
     }
     if (json["title"] is String) {
       title = json["title"];
@@ -50,9 +51,7 @@ class DonationRequests {
     if (json["paymentDetails"] is String) {
       paymentDetails = json["paymentDetails"];
     }
-    if (json["createdAt"] is String) {
-      createdAt = json["createdAt"];
-    }
+    createdAt = json["createdAt"];
   }
 
   static List<DonationRequests> fromList(List<Map<String, dynamic>> list) {
@@ -62,7 +61,7 @@ class DonationRequests {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> _data = <String, dynamic>{};
     _data["requestId"] = requestId;
-    _data["studentId"] = studentId;
+    _data["studentId"] = userId;
     _data["title"] = title;
     _data["description"] = description;
     _data["reason"] = reason;
@@ -74,5 +73,3 @@ class DonationRequests {
     return _data;
   }
 }
-
-

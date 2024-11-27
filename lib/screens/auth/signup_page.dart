@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_help/constants/constants.dart';
+import 'package:edu_help/models/user.dart';
 import 'package:edu_help/screens/auth/signin_page.dart';
 import 'package:edu_help/screens/platform/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpPage extends StatefulWidget {
   final Size size;
@@ -13,12 +15,18 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
+enum SingingCharacter { student, donor }
+
 class _SignUpPageState extends State<SignUpPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _nameController = TextEditingController();
-  final _ageController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _bioController = TextEditingController();
+  final _eduationController = TextEditingController();
+  SingingCharacter? _character = SingingCharacter.student;
   bool _isLoading = false;
 
   createUser() async {
@@ -34,9 +42,30 @@ class _SignUpPageState extends State<SignUpPage> {
 
     //* Authenticate user
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim())
+          .then((value) async {
+        print("User Created !");
+        //* Save user details in users collection
+        final newUser = new AppUser(
+          fullName: _nameController.text,
+          email: _emailController.text,
+          address: _addressController.text,
+          phoneNumber: _phoneNumberController.text,
+          userId: value.user?.uid,
+          role: _character?.name,
+          education:
+              _character?.name == "student" ? _eduationController.text : null,
+          bio: _character?.name == "donor" ? _bioController.text : null,
+          createdAt: FieldValue.serverTimestamp()
+        );
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(value.user?.uid)
+            .set(newUser.toJson());
+      });
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -49,12 +78,6 @@ class _SignUpPageState extends State<SignUpPage> {
           .showSnackBar(SnackBar(content: Text(e.message!)));
       return;
     }
-
-    //* Save user details in users collection
-    await FirebaseFirestore.instance.collection("users").add({
-      "name": _nameController.text,
-      "age": _ageController.text,
-    });
 
     setState(() {
       _isLoading = false;
@@ -78,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
         backgroundColor: Constants.color1,
         centerTitle: true,
         title: Text(
-          "Firebase",
+          "EduHelp",
           style: TextStyle(color: Constants.textColor2),
         ),
       ),
@@ -91,7 +114,7 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: widget.size.height * 0.06),
               Text(
                 "Sign Up",
-                style: TextStyle(color: Constants.textColor2, fontSize: 40),
+                style: TextStyle(color: Constants.textColor2, fontSize: 20.sp),
               ),
               SizedBox(height: widget.size.height * 0.04),
               Container(
@@ -116,25 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         controller: _nameController,
                         style: TextStyle(color: Constants.textColor2),
                         decoration: InputDecoration(
-                          hintText: "Name",
-                          hintStyle: TextStyle(color: Constants.textColor3),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Constants.textColor3),
-                              borderRadius: BorderRadius.circular(10)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Constants.color5),
-                              borderRadius: BorderRadius.circular(10)),
-                        ),
-                      ),
-                      SizedBox(height: widget.size.height * 0.02),
-                      // age Textfield
-                      TextField(
-                        controller: _ageController,
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(color: Constants.textColor2),
-                        decoration: InputDecoration(
-                          hintText: "Age",
+                          hintText: "Full Name",
                           hintStyle: TextStyle(color: Constants.textColor3),
                           enabledBorder: OutlineInputBorder(
                               borderSide:
@@ -164,6 +169,122 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                       SizedBox(height: widget.size.height * 0.02),
+                      // phone number Textfield
+                      TextField(
+                        controller: _phoneNumberController,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(color: Constants.textColor2),
+                        decoration: InputDecoration(
+                          hintText: "Phone Number",
+                          hintStyle: TextStyle(color: Constants.textColor3),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Constants.textColor3),
+                              borderRadius: BorderRadius.circular(10)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Constants.color5),
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                      SizedBox(height: widget.size.height * 0.02),
+                      // address Textfield
+                      TextField(
+                        maxLines: 2,
+                        controller: _addressController,
+                        style: TextStyle(color: Constants.textColor2),
+                        decoration: InputDecoration(
+                          focusColor: Constants.color4,
+                          hintText: "Address",
+                          hintStyle: TextStyle(color: Constants.textColor3),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Constants.textColor3),
+                              borderRadius: BorderRadius.circular(10)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Constants.color5),
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                      SizedBox(height: widget.size.height * 0.02),
+                      // role selection
+                      Column(
+                        children: <Widget>[
+                          Text(
+                            "Select your role:",
+                            style: TextStyle(
+                              color: Constants.color6,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(
+                              'Student',
+                              style: TextStyle(
+                                color: Constants.color6,
+                                fontSize: Constants.fontSize16,
+                              ),
+                            ),
+                            leading: Radio<SingingCharacter>(
+                              value: SingingCharacter.student,
+                              groupValue: _character,
+                              onChanged: (SingingCharacter? value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(
+                              'Donor',
+                              style: TextStyle(color: Constants.color6),
+                            ),
+                            leading: Radio<SingingCharacter>(
+                              value: SingingCharacter.donor,
+                              groupValue: _character,
+                              onChanged: (SingingCharacter? value) {
+                                setState(() {
+                                  _character = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: widget.size.height * 0.02),
+                      // Education TextField
+                      if (_character?.name == "student")
+                        TextField(
+                          controller: _eduationController,
+                          style: TextStyle(color: Constants.textColor2),
+                          decoration: InputDecoration(
+                            hintText: "Education",
+                            hintStyle: TextStyle(color: Constants.textColor3),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Constants.textColor3),
+                                borderRadius: BorderRadius.circular(10)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Constants.color5),
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                        ),
+                      if (_character?.name == "donor")
+                        TextField(
+                          controller: _bioController,
+                          style: TextStyle(color: Constants.textColor2),
+                          decoration: InputDecoration(
+                            hintText: "Tell us about yourself",
+                            hintStyle: TextStyle(color: Constants.textColor3),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Constants.textColor3),
+                                borderRadius: BorderRadius.circular(10)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Constants.color5),
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                        ),
+                      SizedBox(height: widget.size.height * 0.02),
                       // password Textfield
                       TextField(
                         controller: _passwordController,
@@ -182,6 +303,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
+
                       SizedBox(height: widget.size.height * 0.02),
                       // confirm password Textfield
                       TextField(
@@ -218,7 +340,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 child: Text(
                                   "Sign Up",
                                   style: TextStyle(
-                                      fontSize: widget.size.width * 0.05,
+                                      fontSize: Constants.fontSize14,
                                       color: Constants.color1),
                                 ),
                               ),
@@ -230,7 +352,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           Text(
                             "I'm a member! ",
                             style: TextStyle(
-                                fontSize: widget.size.width * 0.04,
+                                fontSize: Constants.fontSize14,
                                 fontWeight: FontWeight.bold,
                                 color: Constants.textColor3),
                           ),
@@ -243,7 +365,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             child: Text(
                               "Login now",
                               style: TextStyle(
-                                  fontSize: widget.size.width * 0.04,
+                                  fontSize: Constants.fontSize14,
                                   fontWeight: FontWeight.bold,
                                   color: Constants.textColor1),
                             ),

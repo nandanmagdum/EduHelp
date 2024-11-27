@@ -1,6 +1,7 @@
 import 'package:edu_help/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   final Size size;
@@ -49,7 +50,7 @@ class _SignInPageState extends State<ForgotPasswordPage> {
         backgroundColor: Constants.color1,
         centerTitle: true,
         title: Text(
-          "Firebase",
+          "EduHelp",
           style: TextStyle(color: Constants.textColor2),
         ),
       ),
@@ -110,12 +111,16 @@ class _SignInPageState extends State<ForgotPasswordPage> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () => resetPassword(),
+                          onPressed: () => () async {
+                            await resetPassword();
+                            Navigator.pop(context);
+                          },
                           child: Text(
                             "Reset Password",
                             style: TextStyle(
-                                fontSize: widget.size.width * 0.05,
-                                color: Constants.color1),
+                              fontSize: Constants.fontSize14,
+                              color: Constants.color1,
+                            ),
                           ),
                         ),
                       ),

@@ -1,20 +1,27 @@
-class User {
+class AppUser {
   String? userId;
   String? fullName;
   String? email;
   String? phoneNumber;
   String? address;
   String? role;
+  String? education;
+  String? bio;
+  dynamic createdAt;
 
-  User(
-      {this.userId,
-      this.fullName,
-      this.email,
-      this.phoneNumber,
-      this.address,
-      this.role});
+  AppUser({
+    this.userId,
+    this.fullName,
+    this.email,
+    this.phoneNumber,
+    this.address,
+    this.role,
+    this.education,
+    this.bio,
+    this.createdAt,
+  });
 
-  User.fromJson(Map<String, dynamic> json) {
+  AppUser.fromJson(Map<String, dynamic> json) {
     if (json["userId"] is String) {
       userId = json["userId"];
     }
@@ -33,10 +40,19 @@ class User {
     if (json["role"] is String) {
       role = json["role"];
     }
+    if (json["education"] is String) {
+      education = json["education"];
+    }
+    if (json["bio"] is String) {
+      bio = json["bio"];
+    }
+    if (json["createdAt"] != null) {
+      createdAt = json["createdAt"];
+    }
   }
 
-  static List<User> fromList(List<Map<String, dynamic>> list) {
-    return list.map(User.fromJson).toList();
+  static List<AppUser> fromList(List<Map<String, dynamic>> list) {
+    return list.map(AppUser.fromJson).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -47,7 +63,9 @@ class User {
     _data["phoneNumber"] = phoneNumber;
     _data["address"] = address;
     _data["role"] = role;
+    _data["education"] = education;
+    _data["bio"] = bio;
+    _data["createdAt"] = createdAt;
     return _data;
   }
 }
-

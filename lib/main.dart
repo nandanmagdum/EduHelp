@@ -1,5 +1,7 @@
 import 'package:edu_help/firebase_options.dart';
 import 'package:edu_help/screens/auth/login_page.dart';
+import 'package:edu_help/screens/auth/signin_page.dart';
+import 'package:edu_help/screens/platform/donation_request_page.dart';
 import 'package:edu_help/screens/platform/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,6 +25,12 @@ class MyApp extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return MaterialApp(
+      theme: ThemeData(
+        iconTheme: IconThemeData(color: Colors.white),
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       home: ScreenUtilInit(
         designSize: Size(400, 720),
@@ -34,7 +42,7 @@ class MyApp extends StatelessWidget {
                 size: size,
               );
             } else {
-              return LoginPage(
+              return SignInPage(
                 size: size,
               );
             }

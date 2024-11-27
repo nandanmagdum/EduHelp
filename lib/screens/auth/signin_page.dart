@@ -4,6 +4,7 @@ import 'package:edu_help/screens/auth/signup_page.dart';
 import 'package:edu_help/screens/platform/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignInPage extends StatefulWidget {
   final Size size;
@@ -62,7 +63,7 @@ class _SignInPageState extends State<SignInPage> {
         backgroundColor: Constants.color1,
         centerTitle: true,
         title: Text(
-          "Firebase",
+          "EduHelp",
           style: TextStyle(color: Constants.textColor2),
         ),
       ),
@@ -143,7 +144,7 @@ class _SignInPageState extends State<SignInPage> {
                             child: Text(
                               "Forgot Password?",
                               style: TextStyle(
-                                  fontSize: widget.size.width * 0.04,
+                                  fontSize: Constants.fontSize12,
                                   fontWeight: FontWeight.bold,
                                   color: Constants.textColor1),
                             ),
@@ -167,7 +168,7 @@ class _SignInPageState extends State<SignInPage> {
                                 child: Text(
                                   "Sign In",
                                   style: TextStyle(
-                                      fontSize: widget.size.width * 0.05,
+                                      fontSize: Constants.fontSize14,
                                       color: Constants.color1),
                                 ),
                               ),
@@ -181,12 +182,12 @@ class _SignInPageState extends State<SignInPage> {
                           Text(
                             "Not a member? ",
                             style: TextStyle(
-                                fontSize: widget.size.width * 0.04,
+                                fontSize: Constants.fontSize14,
                                 fontWeight: FontWeight.bold,
                                 color: Constants.textColor3),
                           ),
                           GestureDetector(
-                            onTap: () => Navigator.pushReplacement(
+                            onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
@@ -194,7 +195,7 @@ class _SignInPageState extends State<SignInPage> {
                             child: Text(
                               "Register now",
                               style: TextStyle(
-                                  fontSize: widget.size.width * 0.04,
+                                  fontSize: Constants.fontSize14,
                                   fontWeight: FontWeight.bold,
                                   color: Constants.textColor1),
                             ),
