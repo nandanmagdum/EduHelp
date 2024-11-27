@@ -53,33 +53,43 @@ class HomePage extends StatelessWidget {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       final donationRequest = snapshot.data?[index];
-                      return ListTile(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    DonationRequestDetailsPage(
-                                  donationRequests: donationRequest,
-                                ),
-                              ));
-                        },
-                        leading: Text(
-                          {index + 1}.toString(),
-                          style: Customtextstyles.normalTextStyle,
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Constants.color4,
                         ),
-                        dense: true,
-                        title: Text(
-                          donationRequest!.title!,
-                          style: Customtextstyles.normalTextStyle,
-                        ),
-                        subtitle: Text(
-                          donationRequest.description!,
-                          style: Customtextstyles.normalTextStyle,
-                        ),
-                        trailing: Text(
-                          donationRequest.amountNeeded.toString(),
-                          style: Customtextstyles.normalTextStyle,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DonationRequestDetailsPage(
+                                    donationRequests: donationRequest,
+                                  ),
+                                ));
+                          },
+                          leading: Text(
+                            '${index + 1}',
+                            style: Customtextstyles.normalTextStyle,
+                          ),
+                          title: Text(
+                            donationRequest!.title!,
+                            style: Customtextstyles.largeTextStyle.copyWith(
+                              overflow: TextOverflow.ellipsis
+                            ),
+                          ),
+                          subtitle: Text(
+                            donationRequest.description!,
+                            style: Customtextstyles.normalTextStyle.copyWith(
+                                overflow: TextOverflow.ellipsis,
+                                color: Constants.textColor3),
+                          ),
+                          trailing: Text(
+                            "${donationRequest.amountNeeded} Rs.",
+                            style: Customtextstyles.normalTextStyle,
+                          ),
                         ),
                       );
                     },

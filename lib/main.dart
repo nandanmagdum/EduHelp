@@ -1,7 +1,5 @@
 import 'package:edu_help/firebase_options.dart';
-import 'package:edu_help/screens/auth/login_page.dart';
 import 'package:edu_help/screens/auth/signin_page.dart';
-import 'package:edu_help/screens/platform/donation_request_page.dart';
 import 'package:edu_help/screens/platform/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

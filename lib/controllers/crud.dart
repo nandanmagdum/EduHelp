@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_help/constants/constants.dart';
 import 'package:edu_help/models/donation_requests.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 Future<List<DonationRequests>> getAllDonations() async {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
