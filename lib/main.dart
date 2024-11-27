@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
+        textTheme: TextTheme(),
         iconTheme: IconThemeData(color: Colors.white),
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: Colors.white),

@@ -22,4 +22,8 @@ class Constants {
   static final fontSize14 = 14.sp;
   static final fontSize16 = 16.sp;
   static final fontSize24 = 24.sp;
+
+  // collection names
+  static const users = "users";
+  static const donation_requests = "donation_requests";
 }
